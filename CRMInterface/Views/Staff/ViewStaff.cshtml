@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "ViewStaff";
+}
+<script src="~/Scripts/ApiRequest.js"></script>
+<h2>ViewStaff</h2>
+<div class="container-fluid" style="height:70vh;">
+    <div class="table-responsive">
+        <br />
+        <button class="btn btn-primary" onclick="location.href='@Url.Action("AddEditStaff", "Staff")';return false;">Add New Staff</button>
+        <br /><br />
+        <table class="table table-hover display table-bordered staffTable"  id="staffTable1">
+            <thead>
+                <tr>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Email</th>
+                    <th>Designation</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="stafflist"></tbody>
+        </table>
+    </div>
+</div>
+<script>
+    getallStaff()
+</script>

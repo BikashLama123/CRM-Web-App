@@ -1,0 +1,65 @@
+﻿@model CRMInterface.Models.Staff
+@{
+    ViewBag.Title = "AddEditStaff";
+}
+<div>
+    <h3>Add/Edit Staff</h3>
+</div>
+<br />
+<div class="form-body text-center form-horizontal">
+
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.sid)
+
+        <div class="form-group col-sm-10">
+            @Html.LabelFor(model => model.sfirstName, new { @class = "control-label col-sm-2" })
+            @Html.EditorFor(model => model.sfirstName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.sfirstName)
+        </div>
+        <div class="form-group col-sm-10">
+            @Html.LabelFor(model => model.slastName, new { @class = "control-label col-sm-2" })
+            @Html.EditorFor(model => model.slastName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.slastName)
+        </div>
+        <div class="form-group col-sm-10">
+            @Html.LabelFor(model => model.suserName, new { @class = "control-label col-sm-2" })
+            @Html.EditorFor(model => model.suserName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.suserName)
+        </div>
+        <div class="form-group col-sm-10">
+            @Html.LabelFor(model => model.sEmail, new { @class = "control-label col-sm-2" })
+            @Html.EditorFor(model => model.sEmail, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.sEmail)
+        </div>
+        <div class="form-group col-sm-10">
+            @Html.LabelFor(model => model.sGender, new { @class = "control-label col-sm-2" })
+            @Html.EditorFor(model => model.sGender, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.sGender)
+        </div>
+        <div class="form-group col-sm-10">
+            @Html.LabelFor(model => model.sDesignation, new { @class = "control-label col-sm-2" })
+            @Html.EditorFor(model => model.sDesignation, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.sDesignation)
+        </div>
+        <div class="form-group col-sm-10">
+            @Html.LabelFor(model => model.sDateofBirth, new { @class = "control-label col-sm-2" })
+            @Html.EditorFor(model => model.sDateofBirth, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.sDateofBirth)
+        </div>
+
+        <div class="form-group col-sm-12">
+            <input type="submit" value="Submit" class="btn btn-primary" />
+            <input type="reset" value="Reset" class="btn btn-danger" />
+        </div>
+    }
+</div>
+
+<script>
+        $(function () {
+            var successMessage = '@TempData["Success"]';
+            if (successMessage != "") {
+                alertify.success(successMessage);
+            }
+        });
+</script>

@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Customers";
+}
+<script src="~/Scripts/ApiRequest.js"></script>
+<div class="container-fluid">
+    <h2>Customers</h2>
+    <div class="panel1 table-responsive">
+        <button class="btn btn-primary" onclick="location.href='@Url.Action("AddEditCustomer", "Customer")';return false;">Add New Customer</button>
+        <br /><br />
+        <table class="table table-bordered table-hover table-condensed customerTable" id="customerTable">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Gender</th>
+                    <th>Staff</th>
+                    <th>Date of Birth</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="customerlist"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    getCustomers();
+    $(function () {
+            var successMessage = '@TempData["Success"]';
+            if (successMessage != "") {
+                alertify.success(successMessage);
+            }
+        });
+</script>

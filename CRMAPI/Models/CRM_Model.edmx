@@ -1,0 +1,590 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CRMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Contact" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="int" />
+          <Property Name="Staff" Type="int" />
+          <Property Name="cdateofBirth" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" />
+          <Property Name="Payment" Type="nvarchar" MaxLength="50" />
+          <Property Name="InvoiceDate" Type="datetime" />
+          <Property Name="PaymentDate" Type="datetime" />
+          <Property Name="TotalPrice" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="sId" Type="int" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="int" Nullable="false" />
+          <Property Name="customerId" Type="int" />
+          <Property Name="staffId" Type="int" />
+          <Property Name="orderDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderDetailId" />
+          </Key>
+          <Property Name="OrderDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderId" Type="int" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Price" Type="nvarchar" MaxLength="50" />
+          <Property Name="Details" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="sid" />
+          </Key>
+          <Property Name="sid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sfirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="slastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="suserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="sEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="sGender" Type="nvarchar" MaxLength="10" />
+          <Property Name="sPassword" Type="nvarchar(max)" />
+          <Property Name="sDesignation" Type="nvarchar" MaxLength="50" />
+          <Property Name="sDateofBirth" Type="datetime" />
+          <Property Name="sIsVerified" Type="bit" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="userPassword" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="userRole" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Customers_Staff1">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="sid" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="Staff" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="sid" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="sId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="customerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="sid" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="staffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="userRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CRMModelStoreContainer">
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invoice" EntityType="Self.Invoice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Customers_Staff1" Association="Self.FK_Customers_Staff1">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Order" Association="Self.FK_Invoice_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Staff" Association="Self.FK_Invoice_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Customers" Association="Self.FK_Order_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Staff" Association="Self.FK_Order_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_Order" Association="Self.FK_OrderDetail_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_Product" Association="Self.FK_OrderDetail_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Roles" Association="Self.FK_User_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CRMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Int32" />
+          <Property Name="Staff" Type="Int32" />
+          <Property Name="cdateofBirth" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Staff1" Relationship="Self.FK_Customers_Staff1" FromRole="Customers" ToRole="Staff" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_Order_Customers" FromRole="Customers" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderId" />
+          </Key>
+          <Property Name="OrderId" Type="Int32" Nullable="false" />
+          <Property Name="customerId" Type="Int32" />
+          <Property Name="staffId" Type="Int32" />
+          <Property Name="orderDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_Order_Customers" FromRole="Order" ToRole="Customers" />
+          <NavigationProperty Name="Staff" Relationship="Self.FK_Order_Staff" FromRole="Order" ToRole="Staff" />
+          <NavigationProperty Name="OrderDetail" Relationship="Self.FK_OrderDetail_Order" FromRole="Order" ToRole="OrderDetail" />
+          <NavigationProperty Name="Invoice" Relationship="CRMModel.FK_Invoice_Order" FromRole="Order" ToRole="Invoice" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderDetailId" />
+          </Key>
+          <Property Name="OrderDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_OrderDetail_Order" FromRole="OrderDetail" ToRole="Order" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_OrderDetail_Product" FromRole="OrderDetail" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="OrderDetail" Relationship="Self.FK_OrderDetail_Product" FromRole="Product" ToRole="OrderDetail" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.FK_User_Roles" FromRole="Roles" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="sid" />
+          </Key>
+          <Property Name="sid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sfirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="slastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="suserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="sEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sGender" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="sPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sDesignation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="sDateofBirth" Type="DateTime" Precision="3" />
+          <Property Name="sIsVerified" Type="Boolean" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_Customers_Staff1" FromRole="Staff" ToRole="Customers" />
+          <NavigationProperty Name="Order" Relationship="Self.FK_Order_Staff" FromRole="Staff" ToRole="Order" />
+          <NavigationProperty Name="Invoice" Relationship="CRMModel.FK_Invoice_Staff" FromRole="Staff" ToRole="Invoice" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="userPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="userRole" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK_User_Roles" FromRole="User" ToRole="Roles" />
+        </EntityType>
+        <Association Name="FK_Customers_Staff1">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="sid" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="Staff" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="customerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="Order" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="sid" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="staffId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="0..1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="userRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CRMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customers" />
+          <EntitySet Name="Order" EntityType="Self.Order" />
+          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" />
+          <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <AssociationSet Name="FK_Customers_Staff1" Association="Self.FK_Customers_Staff1">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Customers" Association="Self.FK_Order_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Staff" Association="Self.FK_Order_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Order" EntitySet="Order" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_Order" Association="Self.FK_OrderDetail_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_Product" Association="Self.FK_OrderDetail_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Roles" Association="Self.FK_User_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <EntitySet Name="Invoice" EntityType="CRMModel.Invoice" />
+          <AssociationSet Name="FK_Invoice_Order" Association="CRMModel.FK_Invoice_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Staff" Association="CRMModel.FK_Invoice_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderId" Type="Int32" />
+          <Property Name="Payment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceDate" Type="DateTime" Precision="3" />
+          <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+          <Property Name="TotalPrice" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="sId" Type="Int32" />
+          <NavigationProperty Name="Order" Relationship="CRMModel.FK_Invoice_Order" FromRole="Invoice" ToRole="Order" />
+          <NavigationProperty Name="Staff" Relationship="CRMModel.FK_Invoice_Staff" FromRole="Invoice" ToRole="Staff" />
+        </EntityType>
+        <Association Name="FK_Invoice_Order">
+          <End Type="CRMModel.Order" Role="Order" Multiplicity="0..1" />
+          <End Type="CRMModel.Invoice" Role="Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OrderId" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Staff">
+          <End Type="CRMModel.Staff" Role="Staff" Multiplicity="0..1" />
+          <End Type="CRMModel.Invoice" Role="Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="sid" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="sId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CRMModelStoreContainer" CdmEntityContainer="CRMEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="CRMModel.Customers">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Staff" ColumnName="Staff" />
+                <ScalarProperty Name="cdateofBirth" ColumnName="cdateofBirth" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Order">
+            <EntityTypeMapping TypeName="CRMModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="customerId" ColumnName="customerId" />
+                <ScalarProperty Name="staffId" ColumnName="staffId" />
+                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetail">
+            <EntityTypeMapping TypeName="CRMModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetail">
+                <ScalarProperty Name="OrderDetailId" ColumnName="OrderDetailId" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="CRMModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="CRMModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staff">
+            <EntityTypeMapping TypeName="CRMModel.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="sid" ColumnName="sid" />
+                <ScalarProperty Name="sfirstName" ColumnName="sfirstName" />
+                <ScalarProperty Name="slastName" ColumnName="slastName" />
+                <ScalarProperty Name="suserName" ColumnName="suserName" />
+                <ScalarProperty Name="sEmail" ColumnName="sEmail" />
+                <ScalarProperty Name="sGender" ColumnName="sGender" />
+                <ScalarProperty Name="sPassword" ColumnName="sPassword" />
+                <ScalarProperty Name="sDesignation" ColumnName="sDesignation" />
+                <ScalarProperty Name="sDateofBirth" ColumnName="sDateofBirth" />
+                <ScalarProperty Name="sIsVerified" ColumnName="sIsVerified" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="CRMModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="userPassword" ColumnName="userPassword" />
+                <ScalarProperty Name="userRole" ColumnName="userRole" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoice">
+            <EntityTypeMapping TypeName="CRMModel.Invoice">
+              <MappingFragment StoreEntitySet="Invoice">
+                <ScalarProperty Name="sId" ColumnName="sId" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="InvoiceDate" ColumnName="InvoiceDate" />
+                <ScalarProperty Name="Payment" ColumnName="Payment" />
+                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

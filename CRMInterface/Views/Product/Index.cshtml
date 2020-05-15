@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/ApiRequest.js"></script>
+<div class="container-fluid">
+    <h2>Products</h2>
+    <div class="panel1 table-responsive">
+        <button class="btn btn-primary" onclick="location.href='@Url.Action("AddEditProduct", "Product")';return false;">Add New Product</button>
+        <br /><br />
+        <table class="table table-bordered table-hover table-condensed productTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Detail</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="customerlist"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    getallProducts();
+    $(function () {
+            var successMessage = '@TempData["Success"]';
+            if (successMessage != "") {
+                alertify.success(successMessage);
+            }
+        });
+</script>

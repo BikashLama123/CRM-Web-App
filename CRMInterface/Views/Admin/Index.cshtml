@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/ApiRequest.js"></script>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<link href="~/Content/css/CustomDesign.css" rel="stylesheet" />
+
+<link href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+<div>
+    <div class="container-fluid">
+        <br />
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active" style="background-color:transparent;">Dashboard</li>
+        </ol>
+        <div class="row">
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <div class="card-body">New Orders</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-warning text-white mb-4">
+                    <div class="card-body">Invoice</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-success text-white mb-4">
+                    <div class="card-body">Complete Payment</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-danger text-white mb-4">
+                    <div class="card-body">Due Payment</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-white stretched-link" href="#">View Details</a>
+                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="container-fluid">
+    <button class="accordion1">Staffs</button>
+    <div class="panel1 table-responsive">
+        <br />
+        <button class="btn btn-primary" onclick="location.href='@Url.Action("AddEditStaff", "Staff")';return false;">Add New Staff</button>
+        <br /><br />
+        <table class="table table-hover display table-bordered staffTable" id="staffTable1">
+            <thead>
+                <tr>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Email</th>
+                    <th>Designation</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="stafflist"></tbody>
+        </table>
+    </div>
+    <br />
+    <button class="accordion1">Customers</button>
+    <div class="panel1 table-responsive">
+        <br />
+        <button class="btn btn-primary" onclick="location.href='@Url.Action("AddEditCustomer", "Customer")';return false;">Add New Customer</button>
+        <br /><br />
+        <table class="table table-borderless table-hover table-condensed customerTable" id="customerTable">
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th>Gender</th>
+                    <th>Staff</th>
+                    <th>Date of Birth</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="customerlist"></tbody>
+        </table>
+    </div>
+</div>
+
+<br /><br /><br />
+<script>
+    var acc = document.getElementsByClassName("accordion1");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        });
+    }
+    getallStaff();
+    getCustomers();
+
+        $(function () {
+            var successMessage = '@TempData["Success"]';
+            if (successMessage != "") {
+                alertify.success(successMessage);
+            }
+        });
+</script>
